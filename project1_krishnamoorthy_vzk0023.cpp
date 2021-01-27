@@ -23,7 +23,7 @@ int main()
     cout.precision(2);
 
     float loan = 0;
-    float rate = -1;
+    float rate = NULL;
     float payment = 0;
 
 
@@ -35,16 +35,36 @@ int main()
         cin >> loan;
         cin.clear();
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if (loan <= 0)
+        {
+            cout << "Invalid Loan Amount!" << endl;
+        }
     }
 
+    bool rateCheck = false;
 
-    while (rate < 0)
+    while (rateCheck == false)
     {
         cout << "Interest Rate (% per year): ";
-        cin >> rate;
-        cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
+        if (cin >> rate)
+        {
+            if (rate < 0)
+            {
+                rateCheck = false;
+                cout << "Invalid Interest Rate!" << endl;
+            }
+            else
+            {
+                rateCheck = true;
+            }
+        }
+        else
+        {
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cout << "Invalid Interest Rate!" << endl;
+        }
     }
 
     rate = rate/100;
@@ -52,16 +72,17 @@ int main()
 
     float minimumPayment = loan * rate;
 
-    cout << "Monthly Payments: ";
-    cin >> payment;
-
     while (payment <= minimumPayment)
     {
         cout << "Monthly Payments: ";
         cin >> payment;
         cin.clear();
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        cout << "Enter a Valid Monthly Payment!\n";
+
+        if (payment <= minimumPayment)
+        {
+            cout << "Invalid Monthly Payment!" << endl;
+        }
     }
 
     // INITIALIZE VARIABLES
@@ -70,7 +91,7 @@ int main()
     float interest = 0;
     float totalInterest = 0;
     float principal = 0;
-    int currentMonth;
+    int currentMonth = 0;
 
     cout << endl;
 
@@ -85,7 +106,7 @@ int main()
 
     while(balance > 0)
     {
-        if(currentMonth==0)
+        if(currentMonth == 0)
         {
             cout<< currentMonth << "\t$" << loan;
 
@@ -102,7 +123,6 @@ int main()
 
             principal = payment - interest;
             balance = balance - principal;
-
 
             // IAN LARSON HELPED ME FIGURE OUT THIS PORTION
 
